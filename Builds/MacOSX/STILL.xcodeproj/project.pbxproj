@@ -133,11 +133,11 @@
 			path = System/Library/Frameworks/CoreAudio.framework;
 			sourceTree = SDKROOT;
 		};
-		3A03142E1017E6C157566893 = {
+		3634D15F41355320F175D59E = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.c.h;
-			name = "SynthUsingMidiInputTutorial_01.h";
-			path = "../../Source/SynthUsingMidiInputTutorial_01.h";
+			name = Sampler.h;
+			path = ../../Source/Sampler.h;
 			sourceTree = "SOURCE_ROOT";
 		};
 		3E6C557ECF12F9D505FFE1EE = {
@@ -301,6 +301,13 @@
 			path = "../../JuceLibraryCode/include_juce_audio_formats.mm";
 			sourceTree = "SOURCE_ROOT";
 		};
+		AB7DE702D952F27CF1981C4A = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = STILL.h;
+			path = ../../Source/STILL.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		B6214E87C97925156A524D92 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -382,7 +389,8 @@
 			isa = PBXGroup;
 			children = (
 				BE2A1F0EA8E564770F9E588B,
-				3A03142E1017E6C157566893,
+				3634D15F41355320F175D59E,
+				AB7DE702D952F27CF1981C4A,
 			);
 			name = Source;
 			sourceTree = "<group>";

@@ -16,7 +16,7 @@ public:
         // we can now use WAV and AIFF files!
         audioFormatManager.registerBasicFormats();
 
-        File* file = new File("/Users/jan/JUCE/Projects/SynthUsingMidiInputTutorial/Samples/cello.wav");
+        File* file = new File("/Users/jan/JUCE/Projects/STILL/Samples/PIANO_C#2.wav");
         std::unique_ptr<AudioFormatReader> reader (audioFormatManager.createReaderFor(*file));
 
         // allow our sound to be played on all notes
