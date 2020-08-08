@@ -8,11 +8,11 @@
     <key>CFBundleIconFile</key>
     <string></string>
     <key>CFBundleIdentifier</key>
-    <string>com.JUCE.SynthUsingMidiInputTutorial</string>
+    <string>com.JandenBesten.STILL</string>
     <key>CFBundleName</key>
-    <string>SynthUsingMidiInputTutorial</string>
+    <string>STILL</string>
     <key>CFBundleDisplayName</key>
-    <string>SynthUsingMidiInputTutorial</string>
+    <string>STILL</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleSignature</key>

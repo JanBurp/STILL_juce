@@ -1,5 +1,5 @@
 #pragma once
-#include "Synthesizer.h"
+#include "Sampler.h"
 
 //==============================================================================
 class MainContentComponent   : public juce::AudioAppComponent,
@@ -7,7 +7,7 @@ class MainContentComponent   : public juce::AudioAppComponent,
 {
 public:
     MainContentComponent()
-        : synthAudioSource  (keyboardState),
+        : sampler  (keyboardState),
           keyboardComponent (keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
     {
         addAndMakeVisible (keyboardComponent);
@@ -33,17 +33,17 @@ public:
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override
     {
-        synthAudioSource.prepareToPlay (samplesPerBlockExpected, sampleRate);
+        sampler.prepareToPlay (samplesPerBlockExpected, sampleRate);
     }
 
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override
     {
-        synthAudioSource.getNextAudioBlock (bufferToFill);
+        sampler.getNextAudioBlock (bufferToFill);
     }
 
     void releaseResources() override
     {
-        synthAudioSource.releaseResources();
+        sampler.releaseResources();
     }
 
 private:
@@ -60,7 +60,7 @@ private:
     juce::Label cpuUsageText;
 
     juce::MidiKeyboardState keyboardState;
-    SynthAudioSource synthAudioSource;
+    Sampler sampler;
     juce::MidiKeyboardComponent keyboardComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)

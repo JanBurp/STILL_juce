@@ -1,6 +1,6 @@
 
 #include <JuceHeader.h>
-#include "SynthUsingMidiInputTutorial_01.h"
+#include "STILL.h"
 
 class Application    : public juce::JUCEApplication
 {

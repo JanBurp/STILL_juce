@@ -15,10 +15,10 @@ BEGIN
   BEGIN
     BLOCK "040904E4"
     BEGIN
-      VALUE "CompanyName",  "JUCE\0"
-      VALUE "FileDescription",  "SynthUsingMidiInputTutorial\0"
+      VALUE "CompanyName",  "Jan den Besten\0"
+      VALUE "FileDescription",  "STILL\0"
       VALUE "FileVersion",  "1.0.0\0"
-      VALUE "ProductName",  "SynthUsingMidiInputTutorial\0"
+      VALUE "ProductName",  "STILL\0"
       VALUE "ProductVersion",  "1.0.0\0"
     END
   END
