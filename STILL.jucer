@@ -47,6 +47,6 @@
   </EXPORTFORMATS>
   <JUCEOPTIONS/>
   <LIVE_SETTINGS>
-    <OSX buildEnabled="0"/>
+    <OSX buildEnabled="1"/>
   </LIVE_SETTINGS>
 </JUCERPROJECT>

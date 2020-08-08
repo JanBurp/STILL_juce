@@ -18,7 +18,7 @@ public:
 
         // Add files
 
-        // Bass sounds
+        // Bass sounds TODO: Relative paths (to app), see: http://www.cplusplus.com/forum/windows/49104/
         File* bassFile = new File("/Users/jan/JUCE/Projects/STILL/Samples/wav/BASS_2B.wav");
         std::unique_ptr<AudioFormatReader> bassReader (audioFormatManager.createReaderFor(*bassFile));
 
