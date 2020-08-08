@@ -16,15 +16,32 @@ public:
         // we can now use WAV and AIFF files!
         audioFormatManager.registerBasicFormats();
 
-        File* file = new File("/Users/jan/JUCE/Projects/STILL/Samples/PIANO_C#2.wav");
-        std::unique_ptr<AudioFormatReader> reader (audioFormatManager.createReaderFor(*file));
+        // Add files
 
-        // allow our sound to be played on all notes
-        BigInteger allNotes;
-        allNotes.setRange(0, 128, true);
+        // Bass sounds
+        File* bassFile = new File("/Users/jan/JUCE/Projects/STILL/Samples/wav/BASS_2B.wav");
+        std::unique_ptr<AudioFormatReader> bassReader (audioFormatManager.createReaderFor(*bassFile));
 
-        // finally, add our sound
-        synth.addSound(new SamplerSound("default", *reader, allNotes, 60, 0, 10, 10.0));
+        BigInteger bassNotes;
+        bassNotes.setRange(0, 42, true);
+        synth.addSound(new SamplerSound("Bass", *bassReader, bassNotes, 35, 0, 0, 20));
+
+        // Piano sounds
+        File* pianoFile = new File("/Users/jan/JUCE/Projects/STILL/Samples/wav/PIANO_4A.wav");
+        std::unique_ptr<AudioFormatReader> pianoReader (audioFormatManager.createReaderFor(*pianoFile));
+
+        BigInteger pianoNotes;
+        pianoNotes.setRange(43, 78, true);
+        synth.addSound(new SamplerSound("Piano", *pianoReader, pianoNotes, 69, 0, 0, 20));
+
+        // Afterglow sounds
+        File* afterglowFile = new File("/Users/jan/JUCE/Projects/STILL/Samples/wav/AFTERGLOW_6A.wav");
+        std::unique_ptr<AudioFormatReader> afterglowReader (audioFormatManager.createReaderFor(*afterglowFile));
+
+        BigInteger afterglowNotes;
+        afterglowNotes.setRange(79, 128, true);
+        synth.addSound(new SamplerSound("Afterglow", *afterglowReader, afterglowNotes, 93, 0, 0, 20));
+
 
     }
 
