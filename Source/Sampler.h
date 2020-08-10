@@ -72,12 +72,11 @@ public:
 
         if ( !incomingMidi.isEmpty() ) {
             int numEvents = incomingMidi.getNumEvents(); // SLOW
-            Logger::outputDebugString("incomingMidi events: " + std::to_string(numEvents) );
             for (auto i = 0; i < numEvents; i++)
             {
-                for (const auto meta : incomingMidi) {
-                    const auto msg = meta.getMessage();
-                    Logger::outputDebugString(msg.getDescription());
+                for (const auto midiEvent : incomingMidi) {
+                    const auto midiMessage = midiEvent.getMessage();
+                    Logger::outputDebugString("DEBUG - " + midiMessage.getDescription() );
                 }
             }
 

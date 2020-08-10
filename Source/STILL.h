@@ -25,24 +25,17 @@ public:
         Logger::outputDebugString("DEBUG - loaded MIDI file. Tracks: " +std::to_string(theMIDIFile.getNumTracks()) );
 
         // MIDI EVENTS
-        const MidiMessageSequence *theSequence = theMIDIFile.getTrack(0);
-        Logger::outputDebugString("DEBUG - MIDI file has " +std::to_string(theSequence->getNumEvents()) + " events." );
+        const MidiMessageSequence *midiSequence = theMIDIFile.getTrack(0);
+        int numEvents = midiSequence->getNumEvents();
+        Logger::outputDebugString("DEBUG - MIDI file has events: " + std::to_string(numEvents) );
 
-        // // Iterating through the MIDI file contents and trying to find an event that
-        // // needs to be called in the current time frame
-        // for (auto i = 0; i < theSequence->getNumEvents(); i++)
-        // {
-        //     MidiMessageSequence::MidiEventHolder *event = theSequence->getEventPointer(i);
-
-        //     if (event->message.getTimeStamp() >= startTime && event->message.getTimeStamp() < endTime)
-        //     {
-        //         auto samplePosition = roundToInt((event->message.getTimeStamp() - startTime) * getSampleRate());
-        //         midiMessages.addEvent(event->message, samplePosition);
-
-        //         isPlayingSomething = true;
-        //     }
-        // }
-
+        for (auto i = 0; i < numEvents; i++)
+        {
+            for (const auto midiEvent : *midiSequence ) {
+                const auto midiMessage = midiEvent->message;
+                Logger::outputDebugString( midiMessage.getDescription() + " - " + std::to_string(i));
+            }
+        }
 
         setSize (600, 200);
         startTimer (400);
