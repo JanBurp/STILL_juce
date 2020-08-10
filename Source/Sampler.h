@@ -70,9 +70,15 @@ public:
         juce::MidiBuffer incomingMidi;
         keyboardState.processNextMidiBuffer (incomingMidi, bufferToFill.startSample, bufferToFill.numSamples, true);
         // THIS IS TOO SLOW
-        // if (incomingMidi.getNumEvents()>0) {
-        //     Logger::outputDebugString("incomingMidi event");
-        // }
+        if (incomingMidi.getNumEvents()>0) {
+            Logger::outputDebugString("incomingMidi events: " + std::to_string(incomingMidi.getNumEvents()) );
+//            for (auto i = 0; i < incomingMidi.getNumEvents(); i++)
+//            {
+//                MidiMessageSequence::MidiEventHolder *event = incomingMidi.getEventPointer(i);
+//                Logger::outputDebugString(event->message.getDescription());
+//            }
+
+        }
         synth.renderNextBlock (*bufferToFill.buffer, incomingMidi, bufferToFill.startSample, bufferToFill.numSamples);
     }
 
