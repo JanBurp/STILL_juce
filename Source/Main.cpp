@@ -8,12 +8,12 @@ public:
     //==============================================================================
     Application() = default;
 
-    const juce::String getApplicationName() override       { return "SynthUsingMidiInputTutorial"; }
+    const juce::String getApplicationName() override       { return "STILL"; }
     const juce::String getApplicationVersion() override    { return "1.0.0"; }
 
     void initialise (const juce::String&) override
     {
-        mainWindow.reset (new MainWindow ("SynthUsingMidiInputTutorial", new MainContentComponent, *this));
+        mainWindow.reset (new MainWindow ("STILL", new MainContentComponent, *this));
     }
 
     void shutdown() override                         { mainWindow = nullptr; }

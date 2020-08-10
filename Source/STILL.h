@@ -50,7 +50,7 @@ private:
     void timerCallback() override
     {
         keyboardComponent.grabKeyboardFocus();
-        // stopTimer();
+        stopTimer();
 
         auto cpu = deviceManager.getCpuUsage() * 100;
         cpuUsageText.setText (juce::String (cpu, 6) + " %", juce::dontSendNotification);
