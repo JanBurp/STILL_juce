@@ -1,6 +1,24 @@
 #pragma once
 
-#define MAX_VOICES 4
+
+#define MAX_VOICES 16
+
+const String samplesPath = "/Users/jan/JUCE/Projects/STILL/Samples/wav/";
+
+struct samplerNote {
+    String       name;
+    File*        sampleFile;
+    int          baseNote;
+    int          noteRangeLow;
+    int          noteRangeHigh;
+} book;
+
+const samplerNote allSamplerNotes[3] = {
+    { "Bass", new File(samplesPath + "BASS_2B.wav"), 35, 0,42 },
+    { "Piano", new File(samplesPath + "PIANO_4A.wav"), 69, 43,78 },
+    { "Afterglow", new File(samplesPath + "AFTERGLOW_6A.wav"),93, 79,128 }
+};
+
 
 //==============================================================================
 class Sampler   : public juce::AudioSource
@@ -17,31 +35,19 @@ public:
         audioFormatManager.registerBasicFormats();
 
         // Add files
-
-        // Bass sounds TODO: Relative paths (to app), see: http://www.cplusplus.com/forum/windows/49104/
-        File* bassFile = new File("/Users/jan/JUCE/Projects/STILL/Samples/wav/BASS_2B.wav");
-        std::unique_ptr<AudioFormatReader> bassReader (audioFormatManager.createReaderFor(*bassFile));
-
-        BigInteger bassNotes;
-        bassNotes.setRange(0, 42, true);
-        synth.addSound(new SamplerSound("Bass", *bassReader, bassNotes, 35, 0, 0, 20));
-
-        // Piano sounds
-        File* pianoFile = new File("/Users/jan/JUCE/Projects/STILL/Samples/wav/PIANO_4A.wav");
-        std::unique_ptr<AudioFormatReader> pianoReader (audioFormatManager.createReaderFor(*pianoFile));
-
-        BigInteger pianoNotes;
-        pianoNotes.setRange(43, 78, true);
-        synth.addSound(new SamplerSound("Piano", *pianoReader, pianoNotes, 69, 0, 0, 20));
-
-        // Afterglow sounds
-        File* afterglowFile = new File("/Users/jan/JUCE/Projects/STILL/Samples/wav/AFTERGLOW_6A.wav");
-        std::unique_ptr<AudioFormatReader> afterglowReader (audioFormatManager.createReaderFor(*afterglowFile));
-
-        BigInteger afterglowNotes;
-        afterglowNotes.setRange(79, 128, true);
-        synth.addSound(new SamplerSound("Afterglow", *afterglowReader, afterglowNotes, 93, 0, 0, 20));
-
+        for (int i = 0; i < 3; ++i)
+        {
+            std::unique_ptr<AudioFormatReader> reader (audioFormatManager.createReaderFor(*allSamplerNotes[i].sampleFile));
+            BigInteger noteRange;
+            noteRange.setRange(allSamplerNotes[i].noteRangeLow, allSamplerNotes[i].noteRangeHigh, true);
+            synth.addSound(new SamplerSound(
+                allSamplerNotes[i].name,
+                *reader,
+                noteRange,
+                allSamplerNotes[i].baseNote,
+                0, 0, 20
+            ));
+        }
 
     }
 
