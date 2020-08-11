@@ -25,6 +25,7 @@ MidiMessageCollector midiCollector;
 juce::MidiBuffer midiBuffer;
 int samplesPlayed;
 bool midiIsPlaying = false;
+double sampleRate = 44100; // We know the samplerate, because the samples are known?? //synth.getSampleRate();
 
 //==============================================================================
 class Sampler   : public juce::AudioSource
@@ -76,7 +77,6 @@ public:
 
         // Add events to buffer
         midiBuffer.clear();
-        double sampleRate = 44100; // We know the samplerate, because the samples are known?? //synth.getSampleRate();
         Logger::outputDebugString( "Samplerate = " +std::to_string(sampleRate) );
         for (int t = 0; t < M.getNumTracks(); t++) {
             const MidiMessageSequence* track = M.getTrack(t);
@@ -139,6 +139,15 @@ public:
 
         synth.renderNextBlock (*bufferToFill.buffer, incomingMidi, bufferToFill.startSample, bufferToFill.numSamples);
     }
+
+    int getSamplePosition() {
+        return samplesPlayed;
+    }
+
+    int getEllapsedTimeInSeconds() {
+        return samplesPlayed / sampleRate;
+    }
+
 
 private:
     juce::MidiKeyboardState& keyboardState;
