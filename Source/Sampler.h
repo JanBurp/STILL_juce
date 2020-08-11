@@ -28,6 +28,8 @@ struct midiLoop {
     String              name;
     String              midiFile;
     bool                isPlaying;
+    int                 startSample; // for looping
+    int                 bufferLength;
     juce::MidiBuffer    midiBuffer;
 };
 
@@ -75,6 +77,8 @@ public:
         {
             midiLoops[i].midiBuffer = loadMidiFileToBuffer( midiPath + midiLoops[i].midiFile);
             midiLoops[i].isPlaying = true;
+            midiLoops[i].startSample = 0;
+            midiLoops[i].bufferLength = midiLoops[i].midiBuffer.getLastEventTime();
         }
     }
 
@@ -130,7 +134,11 @@ public:
         // add events from playing midi-files
         for (int i = 0; i < numOfMidiLoops; ++i) {
             if (midiLoops[i].isPlaying) {
-                playingMidi.addEvents(midiLoops[i].midiBuffer, samplesPlayed, bufferToFill.numSamples, sampleDeltaToAdd);
+                playingMidi.addEvents(midiLoops[i].midiBuffer, samplesPlayed - midiLoops[i].startSample, bufferToFill.numSamples, sampleDeltaToAdd);
+                // Loop?
+                if (samplesPlayed > midiLoops[i].startSample + midiLoops[i].bufferLength) {
+                    midiLoops[i].startSample = samplesPlayed;
+                }
             }
         }
 

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT name="STILL" companyName="Jan den Besten" version="1.0.0" userNotes="STILL (c) jandenbesten.com"
-              companyWebsite="http://jandenbesten.com" projectType="guiapp"
+<JUCERPROJECT name="STILL" companyName="Jan den Besten" version="1.0.0" userNotes="STILL (c) www.jandenbesten.com"
+              companyWebsite="http://www.jandenbesten.com" projectType="guiapp"
               useAppConfig="0" addUsingNamespaceToJuceHeader="1" id="MVV0m8"
-              jucerFormatVersion="1" displaySplashScreen="1">
+              jucerFormatVersion="1" displaySplashScreen="1" companyEmail="info@jandenbesten.com"
+              companyCopyright="(c) Jan den Besten" splashScreenColour="Light"
+              maxBinaryFileSize="20971520">
   <MAINGROUP id="DQvBwo" name="STILL">
     <GROUP id="{D2B62FF7-DDF7-5C79-92CA-D538D90C2BE3}" name="Source">
       <FILE id="O78Jgx" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
