@@ -16,26 +16,24 @@ public:
         cpuUsageText.setText ("CPU Usage", juce::dontSendNotification);
         addAndMakeVisible (cpuUsageText);
 
+        // // Load MIDI file
+        // File* theFile = new File("/Users/jan/JUCE/Projects/STILL/Resources/midi/piano.mid");
+        // FileInputStream theStream( *theFile );
+        // theMIDIFile.readFrom(theStream);
+        // theMIDIFile.convertTimestampTicksToSeconds();
+        // Logger::outputDebugString("DEBUG - loaded MIDI file. Tracks: " +std::to_string(theMIDIFile.getNumTracks()) );
 
-        // Load MIDI file
-        File* theFile = new File("/Users/jan/JUCE/Projects/STILL/Resources/midi/piano.mid");
-        FileInputStream theStream( *theFile );
-        theMIDIFile.readFrom(theStream);
-        theMIDIFile.convertTimestampTicksToSeconds();
-        Logger::outputDebugString("DEBUG - loaded MIDI file. Tracks: " +std::to_string(theMIDIFile.getNumTracks()) );
-
-        // MIDI EVENTS
-        const MidiMessageSequence *midiSequence = theMIDIFile.getTrack(0);
-        int numEvents = midiSequence->getNumEvents();
-        Logger::outputDebugString("DEBUG - MIDI file has events: " + std::to_string(numEvents) );
-
-        for (auto i = 0; i < numEvents; i++)
-        {
-            for (const auto midiEvent : *midiSequence ) {
-                const auto midiMessage = midiEvent->message;
-                Logger::outputDebugString( midiMessage.getDescription() + " - " + std::to_string(i));
-            }
-        }
+        // // MIDI EVENTS
+        // const MidiMessageSequence *midiSequence = theMIDIFile.getTrack(0);
+        // int numEvents = midiSequence->getNumEvents();
+        // Logger::outputDebugString("DEBUG - MIDI file has events: " + std::to_string(numEvents) );
+        // for (auto i = 0; i < numEvents; i++)
+        // {
+        //     for (const auto midiEvent : *midiSequence ) {
+        //         const auto midiMessage = midiEvent->message;
+        //         Logger::outputDebugString( midiMessage.getDescription() + " - " + std::to_string(i));
+        //     }
+        // }
 
         setSize (600, 200);
         startTimer (400);
@@ -81,7 +79,7 @@ private:
 
     juce::MidiKeyboardState keyboardState;
 
-    MidiFile theMIDIFile; // The current MIDI file content
+    // MidiFile theMIDIFile; // The current MIDI file content
 
     Sampler sampler;
     juce::MidiKeyboardComponent keyboardComponent;
