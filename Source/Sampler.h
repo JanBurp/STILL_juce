@@ -10,7 +10,6 @@ const String midiPath = "/Users/jan/JUCE/Projects/STILL/Resources/midi/";
 struct samplerPart {
     String              name;
     String              sampleFile;
-    String              midiFile;
     int                 baseNote;
     int                 noteRangeLow;
     int                 noteRangeHigh;
@@ -18,9 +17,9 @@ struct samplerPart {
 
 const int numOfSampleParts = 3;
 const samplerPart samplerParts[numOfSampleParts] = {
-    { "Bass", "BASS_2B.wav", "", 35, 0,42 },
-    { "Piano", "PIANO_4A.wav", "piano.mid", 69, 43,78 },
-    { "Afterglow", "AFTERGLOW_6A.wav", "", 93, 79,128 }
+    { "Bass", "BASS_2B.wav", 35, 0,42 },
+    { "Piano", "PIANO_4A.wav", 69, 43,78 },
+    { "Afterglow", "AFTERGLOW_6A.wav", 93, 79,128 }
 };
 
 // MIDI
@@ -36,7 +35,7 @@ struct midiLoop {
 const int numOfMidiLoops = 1;
 midiLoop midiLoops[numOfMidiLoops] = {
     // { "Bass", "BASS_2B.wav", "", 35, 0,42 },
-    { "Piano", "piano.mid", false },
+    { "Piano", "piano-very-short.mid", false },
     // { "Afterglow", "AFTERGLOW_6A.wav", "", 93, 79,128 }
 };
 
@@ -85,22 +84,24 @@ public:
     juce::MidiBuffer loadMidiFileToBuffer(String file) {
         // Load file
         FileInputStream fileStream(file);
-        MidiFile M;
-        M.readFrom(fileStream);
-        M.convertTimestampTicksToSeconds();
+        MidiFile midiFile;
+        midiFile.readFrom(fileStream);
+        midiFile.convertTimestampTicksToSeconds();
         Logger::outputDebugString("DEBUG - loaded MIDI file '" + file);
 
         // Add events to buffer
         juce::MidiBuffer midiBuffer;
         midiBuffer.clear();
         Logger::outputDebugString( "Samplerate = " +std::to_string(sampleRate) );
-        for (int t = 0; t < M.getNumTracks(); t++) {
-            const MidiMessageSequence* track = M.getTrack(t);
+        for (int t = 0; t < midiFile.getNumTracks(); t++) {
+            const MidiMessageSequence* track = midiFile.getTrack(t);
             for (int i = 0; i < track->getNumEvents(); i++) {
-                MidiMessage& m = track->getEventPointer(i)->message;
-                int sampleOffset = (int)(sampleRate * m.getTimeStamp());
-                midiBuffer.addEvent(m, sampleOffset);
-//                Logger::outputDebugString( std::to_string(sampleOffset) + " : " + m.getDescription() + " - " + std::to_string(i) );
+                MidiMessage& midiMessage = track->getEventPointer(i)->message;
+                if ( midiMessage.isNoteOnOrOff() ) {
+                    int sampleOffset = (int)(sampleRate * midiMessage.getTimeStamp());
+                    midiBuffer.addEvent(midiMessage, sampleOffset);
+                    //                Logger::outputDebugString( std::to_string(sampleOffset) + " : " + midiMessage.getDescription() + " - " + std::to_string(i) );
+                }
             }
         }
         return midiBuffer;
