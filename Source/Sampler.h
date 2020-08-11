@@ -1,10 +1,12 @@
 #pragma once
 
 #define MAX_VOICES 16
+const double sampleRate = 44100; // We know the samplerate, because the samples are known?? //synth.getSampleRate();
 
 const String samplesPath = "/Users/jan/JUCE/Projects/STILL/Resources/samples/";
 const String midiPath = "/Users/jan/JUCE/Projects/STILL/Resources/midi/";
 
+// Sampler
 struct samplerPart {
     String              name;
     String              sampleFile;
@@ -12,20 +14,30 @@ struct samplerPart {
     int                 baseNote;
     int                 noteRangeLow;
     int                 noteRangeHigh;
-    MidiMessageSequence midiSequence;
 } book;
 
-samplerPart samplerParts[3] = {
+const int numOfSampleParts = 3;
+const samplerPart samplerParts[numOfSampleParts] = {
     { "Bass", "BASS_2B.wav", "", 35, 0,42 },
     { "Piano", "PIANO_4A.wav", "piano.mid", 69, 43,78 },
     { "Afterglow", "AFTERGLOW_6A.wav", "", 93, 79,128 }
 };
 
-MidiMessageCollector midiCollector;
-juce::MidiBuffer midiBuffer;
-int samplesPlayed;
-bool midiIsPlaying = false;
-double sampleRate = 44100; // We know the samplerate, because the samples are known?? //synth.getSampleRate();
+// MIDI
+struct midiLoop {
+    String              name;
+    String              midiFile;
+    bool                isPlaying;
+    juce::MidiBuffer    midiBuffer;
+};
+
+const int numOfMidiLoops = 1;
+midiLoop midiLoops[numOfMidiLoops] = {
+    // { "Bass", "BASS_2B.wav", "", 35, 0,42 },
+    { "Piano", "piano.mid", false },
+    // { "Afterglow", "AFTERGLOW_6A.wav", "", 93, 79,128 }
+};
+
 
 //==============================================================================
 class Sampler   : public juce::AudioSource
@@ -42,7 +54,7 @@ public:
         audioFormatManager.registerBasicFormats();
 
         // Add samplefiles
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < numOfSampleParts; ++i)
         {
             File* sampleFile = new File(samplesPath + samplerParts[i].sampleFile);
             std::unique_ptr<AudioFormatReader> reader (audioFormatManager.createReaderFor(*sampleFile));
@@ -59,15 +71,14 @@ public:
         }
 
         // Load Midi files
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < numOfMidiLoops; ++i)
         {
-            if ( samplerParts[i].midiFile !="" ) {
-                loadMidiFileToBuffer(midiPath + samplerParts[i].midiFile);
-            }
+            midiLoops[i].midiBuffer = loadMidiFileToBuffer( midiPath + midiLoops[i].midiFile);
+            midiLoops[i].isPlaying = true;
         }
     }
 
-    void loadMidiFileToBuffer(String file) {
+    juce::MidiBuffer loadMidiFileToBuffer(String file) {
         // Load file
         FileInputStream fileStream(file);
         MidiFile M;
@@ -76,6 +87,7 @@ public:
         Logger::outputDebugString("DEBUG - loaded MIDI file '" + file);
 
         // Add events to buffer
+        juce::MidiBuffer midiBuffer;
         midiBuffer.clear();
         Logger::outputDebugString( "Samplerate = " +std::to_string(sampleRate) );
         for (int t = 0; t < M.getNumTracks(); t++) {
@@ -87,8 +99,7 @@ public:
 //                Logger::outputDebugString( std::to_string(sampleOffset) + " : " + m.getDescription() + " - " + std::to_string(i) );
             }
         }
-        samplesPlayed = 0;
-        midiIsPlaying = true;
+        return midiBuffer;
     }
 
     void setUsingSynthSound()
@@ -107,37 +118,41 @@ public:
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override
     {
         bufferToFill.clearActiveBufferRegion();
-
-        juce::MidiBuffer incomingMidi;
+        juce::MidiBuffer playingMidi;
 
         // MIDI from keyboard
-        keyboardState.processNextMidiBuffer (incomingMidi, bufferToFill.startSample, bufferToFill.numSamples, true);
+        keyboardState.processNextMidiBuffer (playingMidi, bufferToFill.startSample, bufferToFill.numSamples, true);
 
         // MIDI from file(s)
-        midiCollector.removeNextBlockOfMessages(incomingMidi, bufferToFill.numSamples);
-        // add events from playing midi-file
-        if (midiIsPlaying) {
-            int sampleDeltaToAdd = -samplesPlayed;
-            incomingMidi.addEvents(midiBuffer, samplesPlayed, bufferToFill.numSamples, sampleDeltaToAdd);
-            samplesPlayed += bufferToFill.numSamples;
-            // pass these messages to the keyboard state so that it can update the component
-            // to show on-screen which keys are being pressed on the physical midi keyboard.
-            keyboardState.processNextMidiBuffer(incomingMidi, 0, bufferToFill.numSamples, true);
+        midiCollector.removeNextBlockOfMessages(playingMidi, bufferToFill.numSamples);
+        int sampleDeltaToAdd = -samplesPlayed;
+
+        // add events from playing midi-files
+        for (int i = 0; i < numOfMidiLoops; ++i) {
+            if (midiLoops[i].isPlaying) {
+                playingMidi.addEvents(midiLoops[i].midiBuffer, samplesPlayed, bufferToFill.numSamples, sampleDeltaToAdd);
+            }
         }
 
+        // Keep samplePosition
+        samplesPlayed += bufferToFill.numSamples;
+
         // Log playing MIDI notes
-        if ( !incomingMidi.isEmpty() ) {
-            int numEvents = incomingMidi.getNumEvents();
+        if ( !playingMidi.isEmpty() ) {
+            int numEvents = playingMidi.getNumEvents();
             for (auto i = 0; i < numEvents; i++)
             {
-                for (const auto midiEvent : incomingMidi) {
+                for (const auto midiEvent : playingMidi) {
                     const auto midiMessage = midiEvent.getMessage();
                     Logger::outputDebugString("PLAY - " + midiMessage.getDescription() );
                 }
             }
+            // pass these messages to the keyboard state so that it can update the component
+            // to show on-screen which keys are being pressed on the physical midi keyboard.
+            keyboardState.processNextMidiBuffer(playingMidi, 0, bufferToFill.numSamples, true);
         }
 
-        synth.renderNextBlock (*bufferToFill.buffer, incomingMidi, bufferToFill.startSample, bufferToFill.numSamples);
+        synth.renderNextBlock (*bufferToFill.buffer, playingMidi, bufferToFill.startSample, bufferToFill.numSamples);
     }
 
     int getSamplePosition() {
@@ -153,4 +168,7 @@ private:
     juce::MidiKeyboardState& keyboardState;
     juce::Synthesiser synth;
     AudioFormatManager audioFormatManager;
+
+    MidiMessageCollector midiCollector;
+    int samplesPlayed = 0;
 };
