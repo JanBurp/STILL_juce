@@ -31,11 +31,11 @@ struct midiLoop {
     juce::MidiBuffer    midiBuffer;
 };
 
-const int numOfMidiLoops = 2;
+const int numOfMidiLoops = 3;
 midiLoop midiLoops[numOfMidiLoops] = {
-    // { "Bass", "BASS_2B.wav", "", 35, 0,42 },
-    { "Piano", "piano.mid" },
-    { "Afterglow", "afterglow.mid" }
+    { "Bass", "bass.mid" },
+     { "Piano", "piano.mid" },
+     { "Afterglow", "afterglow.mid" }
 };
 
 
@@ -52,6 +52,8 @@ public:
         // set up our AudioFormatManager class as detailed in the API docs
         // we can now use WAV and AIFF files!
         audioFormatManager.registerBasicFormats();
+
+        Logger::outputDebugString( "Samplerate = " +std::to_string(sampleRate) );
 
         // Add samplefiles
         for (int i = 0; i < numOfSampleParts; ++i)
@@ -90,7 +92,6 @@ public:
         // Add events to buffer
         juce::MidiBuffer midiBuffer;
         midiBuffer.clear();
-        Logger::outputDebugString( "Samplerate = " +std::to_string(sampleRate) );
         for (int t = 0; t < midiFile.getNumTracks(); t++) {
             const MidiMessageSequence* track = midiFile.getTrack(t);
             for (int i = 0; i < track->getNumEvents(); i++) {
