@@ -26,17 +26,16 @@ const samplerPart samplerParts[numOfSampleParts] = {
 struct midiLoop {
     String              name;
     String              midiFile;
-    bool                isPlaying;
     int                 bufferStart;
     int                 bufferLength;
     juce::MidiBuffer    midiBuffer;
 };
 
-const int numOfMidiLoops = 1;
+const int numOfMidiLoops = 2;
 midiLoop midiLoops[numOfMidiLoops] = {
     // { "Bass", "BASS_2B.wav", "", 35, 0,42 },
-    { "Piano", "piano-very-short.mid", false, 0 },
-    // { "Afterglow", "AFTERGLOW_6A.wav", "", 93, 79,128 }
+    { "Piano", "piano.mid" },
+    { "Afterglow", "afterglow.mid" }
 };
 
 
@@ -77,7 +76,6 @@ public:
             midiLoops[i].midiBuffer = loadMidiFileToBuffer( midiPath + midiLoops[i].midiFile);
             midiLoops[i].bufferStart = 0;
             midiLoops[i].bufferLength = midiLoops[i].midiBuffer.getLastEventTime();
-            midiLoops[i].isPlaying = true;
         }
     }
 
@@ -132,13 +130,11 @@ public:
 
         // add events from playing midi-files
         for (int i = 0; i < numOfMidiLoops; ++i) {
-            if (midiLoops[i].isPlaying) {
-                playingMidi.addEvents(midiLoops[i].midiBuffer, samplesPlayed - midiLoops[i].bufferStart, bufferToFill.numSamples, 0);
-                // Loop?
-                if (samplesPlayed > ( midiLoops[i].bufferStart + midiLoops[i].bufferLength) ) {
-                    midiLoops[i].bufferStart += midiLoops[i].bufferLength + sampleRate; // add some extra (1sec) to make sure, first event is playing
-                    Logger::outputDebugString("["+String(samplesPlayed)+"] LOOP : " + midiLoops[i].name + "[" + String(midiLoops[i].bufferStart) + "," + String(midiLoops[i].bufferLength) + "]");
-                }
+            playingMidi.addEvents(midiLoops[i].midiBuffer, samplesPlayed - midiLoops[i].bufferStart, bufferToFill.numSamples, 0);
+            // Loop?
+            if (samplesPlayed > ( midiLoops[i].bufferStart + midiLoops[i].bufferLength) ) {
+                midiLoops[i].bufferStart += midiLoops[i].bufferLength + sampleRate; // add some extra (1sec) to make sure, first event is playing
+                Logger::outputDebugString("["+String(samplesPlayed)+"] LOOP : " + midiLoops[i].name + "[" + String(midiLoops[i].bufferStart) + "," + String(midiLoops[i].bufferLength) + "]");
             }
         }
 
