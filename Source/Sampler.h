@@ -8,12 +8,12 @@ const String midiPath = "/Users/jan/JUCE/Projects/STILL/Resources/midi/";
 
 // Sampler
 struct samplerPart {
-    String              name;
-    String              sampleFile;
-    int                 baseNote;
-    int                 noteRangeLow;
-    int                 noteRangeHigh;
-} book;
+    const String    name;
+    const String    sampleFile;
+    const int       baseNote;
+    const int       noteRangeLow;
+    const int       noteRangeHigh;
+};
 
 const int numOfSampleParts = 3;
 const samplerPart samplerParts[numOfSampleParts] = {
@@ -24,8 +24,8 @@ const samplerPart samplerParts[numOfSampleParts] = {
 
 // MIDI
 struct midiLoop {
-    String              name;
-    String              midiFile;
+    const String        name;
+    const String        midiFile;
     int                 bufferStart;
     int                 bufferLength;
     juce::MidiBuffer    midiBuffer;
@@ -34,8 +34,8 @@ struct midiLoop {
 const int numOfMidiLoops = 3;
 midiLoop midiLoops[numOfMidiLoops] = {
     { "Bass", "bass.mid" },
-     { "Piano", "piano.mid" },
-     { "Afterglow", "afterglow.mid" }
+    { "Piano", "piano.mid" },
+    { "Afterglow", "afterglow.mid" }
 };
 
 
