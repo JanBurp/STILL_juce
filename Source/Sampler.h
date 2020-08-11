@@ -27,7 +27,7 @@ struct midiLoop {
     String              name;
     String              midiFile;
     bool                isPlaying;
-    int                 startSample; // for looping
+    int                 bufferStart;
     int                 bufferLength;
     juce::MidiBuffer    midiBuffer;
 };
@@ -35,7 +35,7 @@ struct midiLoop {
 const int numOfMidiLoops = 1;
 midiLoop midiLoops[numOfMidiLoops] = {
     // { "Bass", "BASS_2B.wav", "", 35, 0,42 },
-    { "Piano", "piano-very-short.mid", false },
+    { "Piano", "piano-very-short.mid", false, 0 },
     // { "Afterglow", "AFTERGLOW_6A.wav", "", 93, 79,128 }
 };
 
@@ -75,9 +75,9 @@ public:
         for (int i = 0; i < numOfMidiLoops; ++i)
         {
             midiLoops[i].midiBuffer = loadMidiFileToBuffer( midiPath + midiLoops[i].midiFile);
-            midiLoops[i].isPlaying = true;
-            midiLoops[i].startSample = 0;
+            midiLoops[i].bufferStart = 0;
             midiLoops[i].bufferLength = midiLoops[i].midiBuffer.getLastEventTime();
+            midiLoops[i].isPlaying = true;
         }
     }
 
@@ -100,7 +100,6 @@ public:
                 if ( midiMessage.isNoteOnOrOff() ) {
                     int sampleOffset = (int)(sampleRate * midiMessage.getTimeStamp());
                     midiBuffer.addEvent(midiMessage, sampleOffset);
-                    //                Logger::outputDebugString( std::to_string(sampleOffset) + " : " + midiMessage.getDescription() + " - " + std::to_string(i) );
                 }
             }
         }
@@ -130,21 +129,18 @@ public:
 
         // MIDI from file(s)
         midiCollector.removeNextBlockOfMessages(playingMidi, bufferToFill.numSamples);
-        int sampleDeltaToAdd = -samplesPlayed;
 
         // add events from playing midi-files
         for (int i = 0; i < numOfMidiLoops; ++i) {
             if (midiLoops[i].isPlaying) {
-                playingMidi.addEvents(midiLoops[i].midiBuffer, samplesPlayed - midiLoops[i].startSample, bufferToFill.numSamples, sampleDeltaToAdd);
+                playingMidi.addEvents(midiLoops[i].midiBuffer, samplesPlayed - midiLoops[i].bufferStart, bufferToFill.numSamples, 0);
                 // Loop?
-                if (samplesPlayed > midiLoops[i].startSample + midiLoops[i].bufferLength) {
-                    midiLoops[i].startSample = samplesPlayed;
+                if (samplesPlayed > ( midiLoops[i].bufferStart + midiLoops[i].bufferLength) ) {
+                    midiLoops[i].bufferStart += midiLoops[i].bufferLength + sampleRate; // add some extra (1sec) to make sure, first event is playing
+                    Logger::outputDebugString("["+String(samplesPlayed)+"] LOOP : " + midiLoops[i].name + "[" + String(midiLoops[i].bufferStart) + "," + String(midiLoops[i].bufferLength) + "]");
                 }
             }
         }
-
-        // Keep samplePosition
-        samplesPlayed += bufferToFill.numSamples;
 
         // Log playing MIDI notes
         if ( !playingMidi.isEmpty() ) {
@@ -153,7 +149,7 @@ public:
             {
                 for (const auto midiEvent : playingMidi) {
                     const auto midiMessage = midiEvent.getMessage();
-                    Logger::outputDebugString("PLAY - " + midiMessage.getDescription() );
+                    Logger::outputDebugString("["+String(samplesPlayed)+"] PLAY - " + midiMessage.getDescription() + " ["+ String(midiMessage.getTimeStamp()) +"]" );
                 }
             }
             // pass these messages to the keyboard state so that it can update the component
@@ -161,6 +157,10 @@ public:
             keyboardState.processNextMidiBuffer(playingMidi, 0, bufferToFill.numSamples, true);
         }
 
+        // Keep samplePosition
+        samplesPlayed += bufferToFill.numSamples;
+
+        // Play
         synth.renderNextBlock (*bufferToFill.buffer, playingMidi, bufferToFill.startSample, bufferToFill.numSamples);
     }
 
