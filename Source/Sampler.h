@@ -13,13 +13,16 @@ struct samplerPart {
     const int       baseNote;
     const int       noteRangeLow;
     const int       noteRangeHigh;
+    const double    attack;
+    const double    release;
+    const double    length;
 };
 
 const int numOfSampleParts = 3;
 const samplerPart samplerParts[numOfSampleParts] = {
-    { "Bass", "BASS_2B.wav", 35, 0,42 },
-    { "Piano", "PIANO_4A.wav", 69, 43,78 },
-    { "Afterglow", "AFTERGLOW_6A.wav", 93, 79,128 }
+    { "Bass", "BASS_2B.wav", 35, 0,42, 0,10,82 },
+    { "Piano", "PIANO_4A.wav", 69, 43,78, 0,5,21 },
+    { "Afterglow", "AFTERGLOW_6A.wav", 93, 79,128, 0,10,30 }
 };
 
 // MIDI
@@ -67,7 +70,7 @@ public:
                 *reader,
                 noteRange,
                 samplerParts[i].baseNote,
-                0, 0, 20
+                samplerParts[i].attack, samplerParts[i].release, samplerParts[i].length
             ));
             Logger::outputDebugString("DEBUG - Added sound '" + samplerParts[i].name + "' to sampler ["+samplerParts[i].sampleFile+"]");
         }
