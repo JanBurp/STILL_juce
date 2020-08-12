@@ -57,6 +57,10 @@
 			isa = PBXBuildFile;
 			fileRef = A0A3246D87A049205DA1F7AB;
 		};
+		0F4DE59D2726F418F549AD67 = {
+			isa = PBXBuildFile;
+			fileRef = 672482E2AAAD4C94142E131D;
+		};
 		8F8F13F20B9E55B62BA423A4 = {
 			isa = PBXBuildFile;
 			fileRef = BE2A1F0EA8E564770F9E588B;
@@ -172,6 +176,13 @@
 			path = System/Library/Frameworks/CoreMIDI.framework;
 			sourceTree = SDKROOT;
 		};
+		41F86ACFBF53F3095C1C3E70 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SamplerPart.h;
+			path = ../../Source/SamplerPart.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		4D493CB7FB5B63F878945144 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -233,6 +244,13 @@
 			lastKnownFileType = file;
 			name = "juce_audio_formats";
 			path = "../../../../../../../modules/juce_audio_formats";
+			sourceTree = "SOURCE_ROOT";
+		};
+		672482E2AAAD4C94142E131D = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = SamplerPart.cpp;
+			path = ../../Source/SamplerPart.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
 		6CCE809A066C3A8FC3ABC34F = {
@@ -413,6 +431,8 @@
 		512361DC87365532E983D17A = {
 			isa = PBXGroup;
 			children = (
+				672482E2AAAD4C94142E131D,
+				41F86ACFBF53F3095C1C3E70,
 				4F7A833737B4491BD85382A1,
 				7C6F4D4AE15EFD36FC80DC39,
 				BE2A1F0EA8E564770F9E588B,
@@ -764,6 +784,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F4DE59D2726F418F549AD67,
 				8F8F13F20B9E55B62BA423A4,
 				BD891A0D533A01DAED34FE21,
 				CBEAC84A7C64A36DEF39552C,

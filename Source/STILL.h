@@ -24,6 +24,8 @@ public:
 
         setSize (600, 200);
         startTimer (400);
+
+        Logger::outputDebugString( "Samplerate = " +std::to_string(constants::sampleRate) );
     }
 
     ~MainContentComponent() override
