@@ -1,4 +1,6 @@
 #pragma once
+
+#include "constants.h"
 #include "Sampler.h"
 
 //==============================================================================
@@ -19,7 +21,6 @@ public:
         addAndMakeVisible (activeVoices);
         ellapsedTime.setText ("ellapsedTime", juce::dontSendNotification);
         addAndMakeVisible (ellapsedTime);
-
 
         setSize (600, 200);
         startTimer (400);

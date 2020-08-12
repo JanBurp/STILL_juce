@@ -61,6 +61,10 @@
 			isa = PBXBuildFile;
 			fileRef = BE2A1F0EA8E564770F9E588B;
 		};
+		BD891A0D533A01DAED34FE21 = {
+			isa = PBXBuildFile;
+			fileRef = 60CE235F5AD75A43B0D0D43F;
+		};
 		CBEAC84A7C64A36DEF39552C = {
 			isa = PBXBuildFile;
 			fileRef = E24D9CCB3620F706823E8FAF;
@@ -182,6 +186,13 @@
 			path = "../../../../../../../modules/juce_audio_utils";
 			sourceTree = "SOURCE_ROOT";
 		};
+		4F7A833737B4491BD85382A1 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = constants.h;
+			path = ../../Source/constants.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		5A269AA2ACA124D65F6F5832 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
@@ -210,6 +221,13 @@
 			path = STILL.app;
 			sourceTree = "BUILT_PRODUCTS_DIR";
 		};
+		60CE235F5AD75A43B0D0D43F = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = MidiLoop.cpp;
+			path = ../../Source/MidiLoop.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
 		641193E0B717FA9BD08EC3CB = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -236,6 +254,13 @@
 			lastKnownFileType = text.plist.xml;
 			name = "Info-App.plist";
 			path = "Info-App.plist";
+			sourceTree = "SOURCE_ROOT";
+		};
+		7C6F4D4AE15EFD36FC80DC39 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = MidiLoop.h;
+			path = ../../Source/MidiLoop.h;
 			sourceTree = "SOURCE_ROOT";
 		};
 		839DEDA77093B4C1643926E0 = {
@@ -388,9 +413,12 @@
 		512361DC87365532E983D17A = {
 			isa = PBXGroup;
 			children = (
+				4F7A833737B4491BD85382A1,
+				7C6F4D4AE15EFD36FC80DC39,
 				BE2A1F0EA8E564770F9E588B,
 				3634D15F41355320F175D59E,
 				AB7DE702D952F27CF1981C4A,
+				60CE235F5AD75A43B0D0D43F,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -491,7 +519,7 @@
 		690C73C9F8D21385124D84AC = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -551,7 +579,7 @@
 		203BC2CE24B09A5C65968519 = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -737,6 +765,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F8F13F20B9E55B62BA423A4,
+				BD891A0D533A01DAED34FE21,
 				CBEAC84A7C64A36DEF39552C,
 				BD7131F160ECA5BDF78601CC,
 				60E9DBBE847329FF84E9B385,

@@ -1,5 +1,5 @@
+#include "constants.h"
 
-#include <JuceHeader.h>
 #include "STILL.h"
 
 class Application    : public juce::JUCEApplication

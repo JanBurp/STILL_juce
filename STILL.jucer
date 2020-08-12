@@ -5,12 +5,15 @@
               useAppConfig="0" addUsingNamespaceToJuceHeader="1" id="MVV0m8"
               jucerFormatVersion="1" displaySplashScreen="1" companyEmail="info@jandenbesten.com"
               companyCopyright="(c) Jan den Besten" splashScreenColour="Light"
-              maxBinaryFileSize="20971520">
+              maxBinaryFileSize="20971520" cppLanguageStandard="17">
   <MAINGROUP id="DQvBwo" name="STILL">
     <GROUP id="{D2B62FF7-DDF7-5C79-92CA-D538D90C2BE3}" name="Source">
+      <FILE id="hqxuCP" name="constants.h" compile="0" resource="0" file="Source/constants.h"/>
+      <FILE id="fpn4kP" name="MidiLoop.h" compile="0" resource="0" file="Source/MidiLoop.h"/>
       <FILE id="O78Jgx" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="AbVjsF" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
-      <FILE id="aD6fJW" name="STILL.h" compile="0" resource="0" file="Source/STILL.h"/>
+      <FILE id="nEq0uC" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
+      <FILE id="lJBuFL" name="STILL.h" compile="0" resource="0" file="Source/STILL.h"/>
+      <FILE id="MVVFoK" name="MidiLoop.cpp" compile="1" resource="0" file="Source/MidiLoop.cpp"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
