@@ -49,16 +49,15 @@ public:
     Sampler (juce::MidiKeyboardState& keyState)
         : keyboardState (keyState)
     {
-        for (auto i = 0; i < MAX_VOICES; ++i)                // [1]
-            synth.addVoice (new SamplerVoice());
+        // Add Voices
+        for (auto i = 0; i < MAX_VOICES; ++i) {
+            voices[i] = new SamplerVoice();
+            synth.addVoice (voices[i]);
+        }
 
-        // set up our AudioFormatManager class as detailed in the API docs
-        // we can now use WAV and AIFF files!
-        audioFormatManager.registerBasicFormats();
-
+        // Add SampleSounds
         Logger::outputDebugString( "Samplerate = " +std::to_string(sampleRate) );
-
-        // Add samplefiles
+        audioFormatManager.registerBasicFormats();
         for (int i = 0; i < numOfSampleParts; ++i)
         {
             File* sampleFile = new File(samplesPath + samplerParts[i].sampleFile);
@@ -75,7 +74,7 @@ public:
             Logger::outputDebugString("DEBUG - Added sound '" + samplerParts[i].name + "' to sampler ["+samplerParts[i].sampleFile+"]");
         }
 
-        // Load Midi files
+        // Add Midi files
         for (int i = 0; i < numOfMidiLoops; ++i)
         {
             midiLoops[i].midiBuffer = loadMidiFileToBuffer( midiPath + midiLoops[i].midiFile);
@@ -172,10 +171,22 @@ public:
         return samplesPlayed / sampleRate;
     }
 
+    int getNumberOfActiveVoices() {
+        int activeVoices = 0;
+        for (int i = 0; i < MAX_VOICES; ++i)
+        {
+            if (voices[i]->isVoiceActive()) {
+                activeVoices++;
+            }
+        }
+        return activeVoices;
+    }
+
 
 private:
     juce::MidiKeyboardState& keyboardState;
     juce::Synthesiser synth;
+    juce::SynthesiserVoice* voices[MAX_VOICES];
     AudioFormatManager audioFormatManager;
 
     MidiMessageCollector midiCollector;
