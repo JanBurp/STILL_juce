@@ -2,6 +2,7 @@
 
 #include "constants.h"
 #include "Sampler.h"
+#include "Propability.h"
 
 //==============================================================================
 class MainContentComponent   : public juce::AudioAppComponent,
@@ -28,6 +29,7 @@ public:
 
         setSize (600, 200);
         startTimer (400);
+        propability.startProbability();
 
         Logger::outputDebugString( "Samplerate = " +std::to_string(constants::sampleRate) );
     }
@@ -71,7 +73,7 @@ private:
         auto cpu = deviceManager.getCpuUsage() * 100;
         cpuUsageText.setText (juce::String(cpu, 2) + " %", juce::dontSendNotification);
 
-        propabilityText.setText (juce::String(constants::propability) + "%", juce::dontSendNotification);
+        propabilityText.setText( propability.getPropabilityString() + "%", juce::dontSendNotification );
 
         activeVoices.setText( juce::String(sampler.getNumberOfActiveVoices()) , juce::dontSendNotification);
         ellapsedTime.setText( juce::String(sampler.getEllapsedTimeInSeconds()) , juce::dontSendNotification);

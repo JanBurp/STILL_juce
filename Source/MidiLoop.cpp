@@ -1,4 +1,5 @@
 #include "constants.h"
+#include "Propability.h"
 #include "MidiLoop.h"
 
 MidiLoop::MidiLoop(String name, String midiFile) {
@@ -46,13 +47,9 @@ void MidiLoop::addEventsFromLoop( juce::MidiBuffer *playingMidi, int samplesPlay
             break;
 
         // [B] break if propabilty ...
-        int random = (int) (rand()%100+1);
-        int chance = (bool) (constants::propability < random);
-        if (chance) {
-            Logger::outputDebugString("Propability ["+String(constants::propability)+"% >= "+String(random)+"% ] - REMOVED" );
+        if (propability.getChance()) {
             break;
         }
-        Logger::outputDebugString("Propability ["+String(constants::propability)+"% >= "+String(random)+"% ] - ADDED" );
         // [/B]
 
         // add event

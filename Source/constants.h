@@ -11,10 +11,6 @@ namespace constants
     inline const String midiPath = "/Users/jan/JUCE/Projects/STILL/Resources/midi/";
 
     inline const int numOfMidiLoops = 3;
-    // inline const String midiFiles[numOfMidiLoops] = {"bass.mid","piano.mid","afterglow.mid" };
     inline const int numOfSampleParts = 3;
-
-    inline int propability = 80; // %
-
 }
 #endif

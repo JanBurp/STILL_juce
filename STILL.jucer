@@ -8,6 +8,8 @@
               cppLanguageStandard="17" splashScreenColour="Light">
   <MAINGROUP id="DQvBwo" name="STILL">
     <GROUP id="{D2B62FF7-DDF7-5C79-92CA-D538D90C2BE3}" name="Source">
+      <FILE id="Fcymrc" name="Propability.h" compile="0" resource="0" file="Source/Propability.h"/>
+      <FILE id="iFc4JH" name="Propability.cpp" compile="1" resource="0" file="Source/Propability.cpp"/>
       <FILE id="OY1p9z" name="SamplerPart.cpp" compile="1" resource="0" file="Source/SamplerPart.cpp"/>
       <FILE id="tuiuoH" name="SamplerPart.h" compile="0" resource="0" file="Source/SamplerPart.h"/>
       <FILE id="hqxuCP" name="constants.h" compile="0" resource="0" file="Source/constants.h"/>
