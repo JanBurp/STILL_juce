@@ -17,6 +17,10 @@ public:
 
         cpuUsageText.setText ("CPU Usage", juce::dontSendNotification);
         addAndMakeVisible (cpuUsageText);
+
+        propabilityText.setText ("Propability", juce::dontSendNotification);
+        addAndMakeVisible (propabilityText);
+
         activeVoices.setText ("ActiveVoices", juce::dontSendNotification);
         addAndMakeVisible (activeVoices);
         ellapsedTime.setText ("ellapsedTime", juce::dontSendNotification);
@@ -38,7 +42,8 @@ public:
         keyboardComponent.setLowestVisibleKey(42);
         keyboardComponent.setBounds (0, 40, getWidth(), getHeight() - 40);
 
-        cpuUsageText.setBounds (10, 10, getWidth()/2 -20, 20);
+        cpuUsageText.setBounds (10, 10, getWidth()/4 -20, 20);
+        propabilityText.setBounds (getWidth()/4, 10, getWidth()/4 -20, 20);
         activeVoices.setBounds (getWidth()/2, 10, getWidth()/4 -20, 20);
         ellapsedTime.setBounds (getWidth()/4*3, 10, getWidth()/4 -20, 20);
     }
@@ -66,12 +71,15 @@ private:
         auto cpu = deviceManager.getCpuUsage() * 100;
         cpuUsageText.setText (juce::String(cpu, 2) + " %", juce::dontSendNotification);
 
+        propabilityText.setText (juce::String(constants::propability) + "%", juce::dontSendNotification);
+
         activeVoices.setText( juce::String(sampler.getNumberOfActiveVoices()) , juce::dontSendNotification);
         ellapsedTime.setText( juce::String(sampler.getEllapsedTimeInSeconds()) , juce::dontSendNotification);
     }
 
     //==========================================================================
     juce::Label cpuUsageText;
+    juce::Label propabilityText;
     juce::Label activeVoices;
     juce::Label ellapsedTime;
 

@@ -14,5 +14,7 @@ namespace constants
     // inline const String midiFiles[numOfMidiLoops] = {"bass.mid","piano.mid","afterglow.mid" };
     inline const int numOfSampleParts = 3;
 
+    inline int propability = 80; // %
+
 }
 #endif

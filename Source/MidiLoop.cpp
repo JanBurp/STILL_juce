@@ -32,7 +32,35 @@ juce::MidiBuffer MidiLoop::loadMidiFileToBuffer(String file) {
 }
 
 void MidiLoop::addEventsFromLoop( juce::MidiBuffer *playingMidi, int samplesPlayed, int numSamples ) {
-    playingMidi->addEvents(midiBuffer, samplesPlayed - bufferStart, numSamples, 0);
+    // Code from [A] to [/A] is same as calling: playingMidi->addEvents(midiBuffer, samplesPlayed - bufferStart, numSamples, 0);
+    // But without the [B] section about propability
+    int startSample = samplesPlayed - bufferStart;
+    int sampleDeltaToAdd = 0;
+    // [A]
+    for (auto i = midiBuffer.findNextSamplePosition (startSample); i != midiBuffer.cend(); ++i)
+    {
+        const auto metadata = *i;
+
+        // break if event is not in timeframe of buffer
+        if (metadata.samplePosition >= startSample + numSamples && numSamples >= 0)
+            break;
+
+        // [B] break if propabilty ...
+        int random = (int) (rand()%100+1);
+        int chance = (bool) (constants::propability < random);
+        if (chance) {
+            Logger::outputDebugString("Propability ["+String(constants::propability)+"% >= "+String(random)+"% ] - REMOVED" );
+            break;
+        }
+        Logger::outputDebugString("Propability ["+String(constants::propability)+"% >= "+String(random)+"% ] - ADDED" );
+        // [/B]
+
+        // add event
+        playingMidi->addEvent (metadata.data, metadata.numBytes, metadata.samplePosition + sampleDeltaToAdd);
+    }
+    // [/A]
+
+    // See if midi loop needs to be started again
     if ( isLoopEnded(samplesPlayed) ) {
         resetLoop();
     }
